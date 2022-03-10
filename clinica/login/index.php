@@ -9,10 +9,6 @@ function checkLogin($pdo, $email, $senha)
     SQL;
 
   try {
-    // Neste caso utilize prepared statements para prevenir
-    // ataques do tipo SQL Injection, pois precisamos
-    // inserir dados fornecidos pelo usuário na
-    // consulta SQL (o email do usuário)
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$email]);
     $row = $stmt->fetch();
@@ -52,7 +48,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Clínica - Login</title>
 
-  <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-CuOF+2SnTUfTwSZjCXf01h7uYhfOBuxIhGKPbfEJ3+FqH/s6cIFN9bGr1HmAg4fQ" crossorigin="anonymous">
 
   <style>
@@ -106,7 +101,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <main>
       <h3>Efetue login</h3>
       <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST" class="row g-3">
-        <!-- E-mail e senha -->
         <div class="col-sm-12">
           <label for="email" class="form-label">E-mail</label>
           <input type="email" name="email" class="form-control" id="email">

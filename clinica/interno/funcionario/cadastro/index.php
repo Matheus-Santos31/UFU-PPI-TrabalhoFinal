@@ -1,3 +1,13 @@
+<?php
+
+require_once "../conexaoMysql.php";
+require_once "../login/autenticacao.php";
+
+session_start();
+$pdo = mysqlConnect();
+exitWhenNotLogged($pdo);
+
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -28,10 +38,10 @@
                         <a class="nav-link" href="../../index.html">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../../funcionario/cadastro/index.html">Novo Funcionário</a>
+                        <a class="nav-link" href="./funcionario/cadastro/index.html">Novo Funcionário</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="index.html">Novo Paciente</a>
+                        <a class="nav-link" href="../../paciente/cadastro/index.html">Novo Paciente</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="endereco">Listar Funcionários</a>
@@ -61,7 +71,7 @@
         crossorigin="anonymous"></script>
 <main class="container mt-4 col-sm-12 d-flex justify-content-center">
     <section>
-        <h2>Cadastro de Paciente</h2>
+        <h2>Cadastro de Funcionário</h2>
             <form action="action.php" method="post" class="row g-2">
                 <div class="col-sm-6 mb-2 form-floating">
                     <input type="text" id="nome" name="nome" class="form-control" placeholder=" ">
@@ -88,38 +98,43 @@
                     <label for="cidade">Cidade</label>
                 </div>
                 <div class="col-sm-8 mb-2 form-floating">
-                    <input type="text" id="end" name="end" class="form-control" placeholder=" ">
-                    <label for="end">Logradouro</label>
+                    <input type="text" id="logradouro" name="logradouro" class="form-control" placeholder=" ">
+                    <label for="logradouro">Logradouro</label>
                 </div>
                 <div class="col-sm-4 mb-2 form-floating">
                     <select class="form-select" id="estado" name="estado" placeholder=" ">
                         <option selected></option>
                         <option>MG</option>
-                        <option>SP</option>
-                        <option>RJ</option>
-                        <option>BA</option>
                     </select>
                     <label for="estado">Estado</label>
                 </div>
                 <div class="col-sm-4 mb-2 form-floating">
-                    <input type="text" id="peso" name="peso" class="form-control" placeholder=" ">
-                    <label for="peso">Peso</label>
+                    <input class="form-control" type="date" name="data" id="data">
+                    <label for="data">Início do Contrato</label>
                 </div>
                 <div class="col-sm-4 mb-2 form-floating">
-                    <input type="text" id="altura" name="altura" class="form-control" placeholder=" ">
-                    <label for="altura">Altura</label>
+                    <input type="text"  id="salario" name="salario" class="form-control" placeholder=" ">
+                    <label for="salario">Salario</label>
                 </div>
                 <div class="col-sm-4 mb-2 form-floating">
-                    <select class="form-select" id="tipoSanguineo" name="tipoSanguineo" placeholder=" ">
-                        <option selected></option>
-                        <option>A+</option>
-                        <option>A-</option>
-                        <option>B+</option>
-                        <option>B-</option>
-                        <option>O+</option>
-                        <option>O-</option>
-                    </select>
-                    <label for="tipoSanguineo">Tipo Sanguíneo</label>
+                    <input type="password"  id="senha" name="senha" class="form-control" placeholder=" ">
+                    <label for="senha">Senha</label>
+                </div>
+                <div class="col-md-12 mb-2 form-floating">
+                    <div class="form-check">
+                        <input type="checkbox" onchange="abrirEspecialidade()" id="eMedico" class="form-check-input">
+                        <label for="eMedico" class="form-check-label">É Médico ?</label>
+                    </div>
+                </div>
+                <div class="container-fluid" id="especialidades" style="display: none;">
+                    <div class="col-sm-6 mb-2 ml-2 form-floating">
+                        <input type="text"  id="especialidade" name="especialidade" class="form-control" placeholder=" ">
+                        <label for="especialidade">Especialidade</label>
+                    </div>
+                    <div class="col-sm-6 mb-2 form-floating">
+                        <input type="text"  id="crm" name="crm" class="form-control" placeholder=" ">
+                        <label for="crm">CRM</label>
+                    </div>
                 </div>
                 <div class="col-md-12 mb-2">
                     <button type="submit" class="btn btn-primary">
@@ -130,5 +145,17 @@
             </form>
     </section>
 </main>
+<script>
+    function abrirEspecialidade(){
+        var check = document.getElementById("eMedico").value;
+        var divEspecialidade = document.getElementById("especialidades")
+        if(check){
+            divEspecialidade.style.display = 'flex';
+        }else{
+            divEspecialidade.style.display = 'none';
+        }
+        console.log(check);
+    }
+</script>
 </body>
 </html>

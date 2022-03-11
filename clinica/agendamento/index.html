@@ -53,7 +53,7 @@
     <main>
         <section class="container mt-3">
             <h2>Agendamento</h2>
-            <form action="action.php" method="post" class="row g-2">
+            <form id="form" class="row g-2">
                 <div class="col-sm-6 mb-2 form-floating">
                     <select class="form-select" id="especialidade" name="especialidade"
                         aria-label="Floating label select example">
@@ -98,7 +98,7 @@
                     <label for="email">Email</label>
                 </div>
                 <div class="col-md-12 mb-2">
-                    <button type="submit" class="btn btn-primary">
+                    <button type="button" onclick="submitRequest()" class="btn btn-primary">
                         Enviar
                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"
                             fill="#FFFFFF">
@@ -109,6 +109,10 @@
                     </button>
                 </div>
             </form>
+            <div id="alert-container" class="alert alert-dark alert-dismissible fade" role="alert">
+                <span id="alert-message"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
         </section>
     </main>
 </body>
@@ -120,6 +124,30 @@
         }
     }
 
+    async function submitRequest() {
+        let form = new FormData(document.getElementById('form'));
+        let alertContainer = document.getElementById('alert-container');
+        let alert = document.getElementById('alert-message');
+        let btn = document.getElementById('button-cad');
+        let message;
+        try {
+            alertContainer.classList.remove('show');
+            btn.disabled = true;
+            let response = await fetch("cadastraAgendamento.php", {
+                method: "POST",
+                body: form
+            });
+            if (!response.ok) throw new Error(response.statusText);
+            let json = await response.json();
+            btn.disabled = false
+            message = json.message;
+        } catch (error) {
+            message = "Erro ao cadastrar agendamento";
+        } finally {
+            alert.innerText = message;
+            alertContainer.classList.add('show');
+        }
+
     async function buscarMedicoPorEspecialidade(especialidade) {
         let selectMedico = document.getElementById('medico');
         try {
@@ -130,8 +158,8 @@
             removeAllChildNodes(selectMedico);
             medicos.forEach(value => {
                 const option = document.createElement('option');
-                option.text = value;
-                option.value = value;
+                option.text = value.nome;
+                option.value = value.id;
                 selectMedico.appendChild(option);
             })
         }

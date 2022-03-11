@@ -4,10 +4,21 @@ $pdo = mysqlConnect();
 
 $especialidade = $_GET["especialidade"] ?? "";
 
+class Medico
+{
+    public $id;
+    public $nome;
+    function __construct($id, $nome)
+    {
+        $this->id = $id;
+        $this->nome = $nome;
+    }
+}
+
 try {
 
     $sql = <<<SQL
-      SELECT p.nome 
+      SELECT p.nome, p.id
       FROM Medico m
       inner join
       Pessoa p
@@ -20,7 +31,7 @@ try {
 
     $medicos = [];
     while ($row = $stmt->fetch()) {
-        $medico = htmlspecialchars($row['nome']);
+        $medico = new Medico(htmlspecialchars($row['id']), htmlspecialchars($row['nome']));
         array_push($medicos, $medico);
     }
     echo json_encode($medicos);

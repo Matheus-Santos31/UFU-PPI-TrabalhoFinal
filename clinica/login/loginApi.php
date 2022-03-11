@@ -1,6 +1,6 @@
 <?php
 
-require_once "conexaoMysql.php";
+require_once "../conexaoMysql.php";
 require_once "autenticacao.php";
 session_start();
 
@@ -25,7 +25,7 @@ if ($senhaHash = checkPassword($pdo, $email, $senha)) {
   // de login em outros scripts PHP
   $_SESSION['emailUsuario'] = $email;
   $_SESSION['loginString'] = hash('sha512', $senhaHash . $_SERVER['HTTP_USER_AGENT']);  
-  $response = new RequestResponse(true, '../interno.php');
+  $response = new RequestResponse(true, '../interno');
 } 
 else
   $response = new RequestResponse(false, ''); 

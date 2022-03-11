@@ -21,10 +21,10 @@ function checkPassword($pdo, $email, $senha)
     $senhaHash = $stmt->fetchColumn();
 
     if (!$senhaHash) 
-      return false; // email não encontrado
+    exit('Email nao encontrado'); // email não encontrado
 
     if (!password_verify($senha, $senhaHash))
-      return false; // senha incorreta
+    exit('senha icorreta');
       
     // email e senha corretos
     return $senhaHash;

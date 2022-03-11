@@ -21,13 +21,13 @@ class RequestResponse
 
 try {
     $sql = <<<SQL
-    INSERT INTO Enderecos (logradouro, cep, cidade, estado)
-    VALUES (?, ?, ?, ?, ?)
+    INSERT INTO Enderecos (cep, logradouro, cidade, estado)
+    VALUES (?, ?, ?, ?)
     SQL;
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute([
-        $logradouro, $cep, $cidade, $estado
+        $cep, $logradouro, $cidade, $estado
     ]);
 
     echo json_encode(new RequestResponse(true, "Endereço cadastrado com sucesso"));

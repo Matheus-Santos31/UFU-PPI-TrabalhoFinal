@@ -73,7 +73,7 @@
                     <label for="estado">Estado</label>
                 </div>
                 <div class="col-md-12 mb-2">
-                    <button onclick="submitRequest()" type="submit" class="btn btn-primary">
+                    <button id="button-cad" onclick="submitRequest()" type="button" class="btn btn-primary">
                         Cadastrar
                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"
                             fill="#FFFFFF">
@@ -82,12 +82,12 @@
                                 d="M18 7l-1.41-1.41-6.34 6.34 1.41 1.41L18 7zm4.24-1.41L11.66 16.17 7.48 12l-1.41 1.41L11.66 19l12-12-1.42-1.41zM.41 13.41L6 19l1.41-1.41L1.83 12 .41 13.41z" />
                         </svg>
                     </button>
-                    <div id="alert-container" class="alert alert-warning alert-dismissible fade" role="alert">
-                        <span id="alert-message"></span>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
                 </div>
             </form>
+            <div id="alert-container" class="alert alert-dark alert-dismissible fade" role="alert">
+                <span id="alert-message"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
         </section>
     </main>
     <script>
@@ -95,14 +95,19 @@
             let form = new FormData(document.getElementById('form'));
             let alertContainer = document.getElementById('alert-container');
             let alert = document.getElementById('alert-message');
-            let message = '';
+            let btn = document.getElementById('button-cad');
+            let message;
             try {
+                alertContainer.classList.remove('show');
+                btn.disabled = true;
                 let response = await fetch("action.php", {
                     method: "POST",
                     body: form
                 });
                 if (!response.ok) throw new Error(response.statusText);
-                message = await response.json();
+                let json = await response.json();
+                btn.disabled = false
+                message = json.message;
             } catch (error) {
                 message = "Erro ao cadastrar endereço";
             } finally {

@@ -50,7 +50,7 @@
     <main>
         <section class="container mt-3">
             <h2>Cadastro de Endereço</h2>
-            <form class="row g-2">
+            <form id="form" class="row g-2">
                 <div class="col-sm-2 mb-2 form-floating">
                     <input type="text" id="cep" name="cep" class="form-control" placeholder=" ">
                     <label for="cep">CEP</label>
@@ -82,7 +82,7 @@
                                 d="M18 7l-1.41-1.41-6.34 6.34 1.41 1.41L18 7zm4.24-1.41L11.66 16.17 7.48 12l-1.41 1.41L11.66 19l12-12-1.42-1.41zM.41 13.41L6 19l1.41-1.41L1.83 12 .41 13.41z" />
                         </svg>
                     </button>
-                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <div id="alert-container" class="alert alert-warning alert-dismissible fade" role="alert">
                         <span id="alert-message"></span>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
@@ -92,16 +92,22 @@
     </main>
     <script>
         async function submitRequest() {
+            let form = new FormData(document.getElementById('form'));
+            let alertContainer = document.getElementById('alert-container');
             let alert = document.getElementById('alert-message');
             let message = '';
             try {
-                let response = await fetch("action.php");
+                let response = await fetch("action.php", {
+                    method: "POST",
+                    body: form
+                });
                 if (!response.ok) throw new Error(response.statusText);
                 message = await response.json();
             } catch (error) {
                 message = "Erro ao cadastrar endereço";
             } finally {
                 alert.innerText = message;
+                alertContainer.classList.add('show');
             }
         }
     </script>

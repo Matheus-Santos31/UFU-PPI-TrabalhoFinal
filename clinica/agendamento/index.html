@@ -57,9 +57,7 @@
                 <div class="col-sm-6 mb-2 form-floating">
                     <select class="form-select" id="especialidade" name="especialidade"
                         aria-label="Floating label select example">
-                        <option value="cardiologista">Cardiologia</option>
-                        <option value="dermatologista">Dermatologia</option>
-                        <option value="oftalmologista">Oftalmologia</option>
+                        <option selected></option>
                     </select>
                     <label for="especialidade">Especialidade</label>
                 </div>
@@ -103,9 +101,10 @@
                     <button type="submit" class="btn btn-primary">
                         Enviar
                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"
-                             fill="#FFFFFF">
-                            <path d="M0 0h24v24H0z" fill="none"/>
-                            <path d="M18 7l-1.41-1.41-6.34 6.34 1.41 1.41L18 7zm4.24-1.41L11.66 16.17 7.48 12l-1.41 1.41L11.66 19l12-12-1.42-1.41zM.41 13.41L6 19l1.41-1.41L1.83 12 .41 13.41z"/>
+                            fill="#FFFFFF">
+                            <path d="M0 0h24v24H0z" fill="none" />
+                            <path
+                                d="M18 7l-1.41-1.41-6.34 6.34 1.41 1.41L18 7zm4.24-1.41L11.66 16.17 7.48 12l-1.41 1.41L11.66 19l12-12-1.42-1.41zM.41 13.41L6 19l1.41-1.41L1.83 12 .41 13.41z" />
                         </svg>
                     </button>
                 </div>
@@ -113,5 +112,67 @@
         </section>
     </main>
 </body>
+
+<script>
+    function removeAllChildNodes(parent) {
+        while (parent.firstChild) {
+            parent.removeChild(parent.firstChild);
+        }
+    }
+
+    async function buscarMedicoPorEspecialidade(especialidade) {
+        let selectMedico = document.getElementById('medico');
+        try {
+            let response = await fetch("buscarMedicoPorEspecialidade.php?especialidade=" + especialidade);
+            let medicos = await response.json();
+            if (!response.ok) throw new Error(response.statusText);
+            selectMedico.disabled = false;
+            removeAllChildNodes(selectMedico);
+            medicos.forEach(value => {
+                const option = document.createElement('option');
+                option.text = value;
+                option.value = value;
+                selectMedico.appendChild(option);
+            })
+        }
+        catch (e) {
+            console.error(e);
+            return;
+        }
+    }
+
+    async function buscaEspecialidade(selectEspecialidade) {
+        try {
+            let response = await fetch("buscaEspecialidade.php");
+            if (!response.ok) throw new Error(response.statusText);
+            let especialidades = await response.json();
+
+            especialidades.forEach(value => {
+                const option = document.createElement('option');
+                option.value = value;
+                option.text = value;
+                selectEspecialidade.appendChild(option);
+            })
+        }
+        catch (e) {
+            console.error(e);
+            return;
+        }
+    }
+
+    window.onload = function () {
+        let selectEspecialidade = document.getElementById("especialidade");
+        buscaEspecialidade(selectEspecialidade);
+
+        selectEspecialidade.addEventListener("change", (event) => {
+            let value = selectEspecialidade.options[selectEspecialidade.selectedIndex].value;
+            buscarMedicoPorEspecialidade(value);
+        });
+    }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
 
 </html>

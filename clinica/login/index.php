@@ -3,8 +3,11 @@
 function checkLogin($pdo, $email, $senha)
 {
   $sql = <<<SQL
-    SELECT hash_senha
-    FROM cliente
+    SELECT a.senhaHash
+    FROM pessoa p
+    inner join
+    funcionario a
+    on a.codigo = p.codigo
     WHERE email = ?
     SQL;
 
@@ -14,7 +17,7 @@ function checkLogin($pdo, $email, $senha)
     $row = $stmt->fetch();
     if (!$row) return false; // nenhum resultado (email não encontrado)
 
-    return password_verify($senha, $row['hash_senha']);
+    return password_verify($senha, $row['senhaHash']);
   } catch (Exception $e) {
     //error_log($e->getMessage(), 3, 'log.php');
     exit('Falha inesperada: ' . $e->getMessage());
@@ -31,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $senha = $_POST["senha"] ?? "";
 
   if (checkLogin($pdo, $email, $senha)) {
-    header("location: Ex02-home.html");
+    header("location: interno");
     exit();
   } else
     $errorMsg = "Dados incorretos";
@@ -45,15 +48,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Clínica - Login</title>
-
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-CuOF+2SnTUfTwSZjCXf01h7uYhfOBuxIhGKPbfEJ3+FqH/s6cIFN9bGr1HmAg4fQ" crossorigin="anonymous">
-
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <style>
-    html {
-      margin: 0;
-      padding: 0;
-    }
-
     body {
       font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
       background-image: url("../galeria/images/bg1.jpg");
@@ -61,11 +57,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       background-size: cover;
       margin: 0;
       padding: 0;
-    }
-
-    .container {
-      position: relative;
-      height: 100vh;
     }
 
     main {
@@ -87,42 +78,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     main>h3 {
       text-align: center;
-      color: blue;
+      color: #222;
       margin-bottom: 2rem;
     }
   </style>
 </head>
-<header>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">Biazonne</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarColor01">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link" href="../#">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="../galeria">Galeria</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="../endereco">Novo Endereço</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="../agendamento" >Agendamento</a>
-          </li>
-        </ul>
-        <a href="#" class="d-flex">
-          <button class="btn btn-primary" type="submit">Login</button>
-        </a>
-      </div>
-    </div>
-  </nav>
-</header>
 
 <body>
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Biazonne</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarColor01">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="../#">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../galeria">Galeria</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../endereco">Novo Endereço</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../agendamento">Agendamento</a>
+            </li>
+          </ul>
+          <a href="#" class="d-flex">
+            <button class="btn btn-primary" type="submit">Login</button>
+          </a>
+        </div>
+      </div>
+    </nav>
+  </header>
   <div class="container">
     <main>
       <h3>Efetue login</h3>
@@ -153,8 +144,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </main>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-popRpmFF9JQgExhfw5tZT4I9/CI5e2QcuUZPOVXb1m7qUmeR2b50u+YFEYe1wgzy" crossorigin="anonymous"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 
 </html>

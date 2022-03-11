@@ -11,11 +11,9 @@ $cep = $_POST["cep"] ?? "";
 $cidade = $_POST["cidade"] ?? "";
 $logradouro = $_POST["logradouro"] ?? "";
 $estado = $_POST["estado"] ?? "";
-$dataInicio = $_POST["data"] ?? "";
-$salario = $_POST["salario"] ?? "";
-$senha = $_POST["senha"] ?? "";
-$especialidade = $_POST["especialidade"] ?? "";
-$crm = $_POST["crm"] ?? "";
+$peso = $_POST["peso"] ?? "";
+$altura = $_POST["altura"] ?? "";
+$tipoSanguineo = $_POST["tipoSanguineo"] ?? "";
 
 $hashsenha = password_hash($senha, PASSWORD_DEFAULT);
 

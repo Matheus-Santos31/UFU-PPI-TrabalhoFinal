@@ -1,5 +1,5 @@
 CREATE TABLE Pessoa (
-  id int PRIMARY KEY,
+  id int PRIMARY KEY AUTO INCREMENT,
   nome varchar(255),
   sexo varchar(30),
   email varchar(100),
@@ -31,7 +31,7 @@ CREATE TABLE Medico (
 );
 
 CREATE TABLE Agenda (
-  id int PRIMARY KEY,
+  id int PRIMARY KEY AUTO INCREMENT,
   data date,
   horario datetime,
   nome varchar(255),

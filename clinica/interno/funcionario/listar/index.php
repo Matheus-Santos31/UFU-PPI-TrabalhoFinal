@@ -1,7 +1,7 @@
 <?php
 
-require_once "../conexaoMysql.php";
-require_once "../login/autenticacao.php";
+require_once "../../../conexaoMysql.php";
+require_once "../../../login/autenticacao.php";
 
 session_start();
 $pdo = mysqlConnect();
@@ -11,8 +11,8 @@ try {
 
   $sql = <<<SQL
   SELECT pe.nome, pe.sexo, pe.email, pe.telefone, pe.cep, pe.logradouro, 
-    pe.cidade, pe.estado, pa.peso, pa.altura, pa.tipoSanguineo 
-  FROM Paciente pa INNER JOIN Pessoa pe on pa.id = pe.id
+    pe.cidade, pe.estado, fu.dataContrato, fu.salario, me.especialidade, me.crm
+  FROM Funcionario fu INNER JOIN Pessoa pe on fu.id = pe.id INNER JOIN Medico me on fu.id = me.id
   SQL;
   $stmt = $pdo->query($sql);
 } 
@@ -26,7 +26,7 @@ catch (Exception $e) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Lista de Paciente</title>
+  <title>Lista de Funcionários</title>
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -55,28 +55,28 @@ catch (Exception $e) {
                 <div class="collapse navbar-collapse" id="navbarColor01">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Home</a>
+                            <a class="nav-link" href="../../">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="./funcionario/cadastro/index.html">Novo Funcionário</a>
+                            <a class="nav-link" href="../cadastro/">Novo Funcionário</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="./paciente/cadastro/index.html">Novo Paciente</a>
+                            <a class="nav-link" href="../../paciente/cadastro/">Novo Paciente</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="endereco">Listar Funcionários</a>
+                            <a class="nav-link" href="#">Listar Funcionários</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="./paciente/listarPaciente/">Listar Pacientes</a>
+                            <a class="nav-link" href="../../paciente/listar/">Listar Pacientes</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="agendamento">Listar Endereços</a>
+                            <a class="nav-link" href="../../endereco/listar/">Listar Endereços</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="agendamento">Listar Agendamentos</a>
+                            <a class="nav-link" href="../../agendamento/listar/">Listar Agendamentos</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="agendamento">Listar meus Agendamentos</a>
+                            <a class="nav-link" href="../../meu_agendamento/listar/">Listar meus Agendamentos</a>
                         </li>
                     </ul>
                     <a href="../logout" class="d-flex">
@@ -105,9 +105,10 @@ catch (Exception $e) {
             <th>Logradouro</th>
             <th>Cidade</th>
             <th>Estado</th>
-            <th>Peso</th>
-            <th>Altura</th>
-            <th>Tipo Sanguíneo</th>
+            <th>Data CT</th>
+            <th>Salario</th>
+            <th>Especialidade</th>
+            <th>CRM</th>
         </tr>
 
         <?php
@@ -121,9 +122,10 @@ catch (Exception $e) {
             $logradouro = htmlspecialchars($row['logradouro']);
             $cidade = htmlspecialchars($row['cidade']);
             $estado = htmlspecialchars($row['estado']);
-            $peso = htmlspecialchars($row['peso']);
-            $altura = htmlspecialchars($row['altura']);
-            $tipoSanguíneo = htmlspecialchars($row['tipoSanguineo']);
+            $dataCT = htmlspecialchars($row['dataContrato']);
+            $salario = htmlspecialchars($row['salario']);
+            $especialidade = htmlspecialchars($row['especialidade']);
+            $crm = htmlspecialchars($row['crm']);
 
             echo <<<HTML
             <tr>
@@ -139,9 +141,10 @@ catch (Exception $e) {
                 <td>$logradouro</td>
                 <td>$cidade</td>
                 <td>$estado</td>
-                <td>$peso</td>
-                <td>$altura</td>
-                <td>$tipoSanguíneo</td>
+                <td>$dataCT</td>
+                <td>$salario</td>
+                <td>$especialidade</td>
+                <td>$crm</td>
             </tr>
             HTML;
 

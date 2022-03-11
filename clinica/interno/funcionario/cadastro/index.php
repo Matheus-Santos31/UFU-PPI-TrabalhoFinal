@@ -1,7 +1,7 @@
 <?php
 
-require_once "../conexaoMysql.php";
-require_once "../login/autenticacao.php";
+require_once "../../../conexaoMysql.php";
+require_once "../../../login/autenticacao.php";
 
 session_start();
 $pdo = mysqlConnect();
@@ -35,28 +35,28 @@ exitWhenNotLogged($pdo);
             <div class="collapse navbar-collapse" id="navbarColor01">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="../../index.html">Home</a>
+                        <a class="nav-link" href="../../">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="./funcionario/cadastro/index.html">Novo Funcionário</a>
+                        <a class="nav-link" href="#">Novo Funcionário</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../../paciente/cadastro/index.html">Novo Paciente</a>
+                        <a class="nav-link" href="../../paciente/cadastro/">Novo Paciente</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="endereco">Listar Funcionários</a>
+                        <a class="nav-link" href="../listar/">Listar Funcionários</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="agendamento">Listar Pacientes</a>
+                        <a class="nav-link" href="../../paciente/listar/">Listar Pacientes</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="agendamento">Listar Endereços</a>
+                        <a class="nav-link" href="../../endereco/listar/">Listar Endereços</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="agendamento">Listar Agendamentos</a>
+                        <a class="nav-link" href="../../agendamento/listar/">Listar Agendamentos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="agendamento">Listar meus Agendamentos</a>
+                        <a class="nav-link" href="../../meu_agendamento/listar/">Listar meus Agendamentos</a>
                     </li>
                 </ul>
                 <a href="../../../logout" class="d-flex">

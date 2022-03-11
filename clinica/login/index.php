@@ -4,10 +4,10 @@ function checkLogin($pdo, $email, $senha)
 {
   $sql = <<<SQL
     SELECT a.senhaHash
-    FROM pessoa p
+    FROM Pessoa p
     inner join
-    funcionario a
-    on a.codigo = p.codigo
+    Funcionario a
+    on a.id = p.id
     WHERE email = ?
     SQL;
 
@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $senha = $_POST["senha"] ?? "";
 
   if (checkLogin($pdo, $email, $senha)) {
-    header("location: interno");
+    header("location: ../interno");
     exit();
   } else
     $errorMsg = "Dados incorretos";

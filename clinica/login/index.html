@@ -104,9 +104,8 @@
     <script>
 
         function enviaForm() {
-
             let xhr = new XMLHttpRequest();
-            xhr.open("POST", "login.php");
+            xhr.open("POST", "loginApi.php");
             xhr.onload = function () {
                 if (xhr.status != 200) {
                     console.error("Falha inesperada: " + xhr.responseText);

@@ -128,18 +128,15 @@
         let form = new FormData(document.getElementById('form'));
         let alertContainer = document.getElementById('alert-container');
         let alert = document.getElementById('alert-message');
-        let btn = document.getElementById('button-cad');
         let message;
         try {
             alertContainer.classList.remove('show');
-            btn.disabled = true;
             let response = await fetch("cadastraAgendamento.php", {
                 method: "POST",
                 body: form
             });
             if (!response.ok) throw new Error(response.statusText);
             let json = await response.json();
-            btn.disabled = false
             message = json.message;
         } catch (error) {
             message = "Erro ao cadastrar agendamento";

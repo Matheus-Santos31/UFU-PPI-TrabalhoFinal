@@ -15,8 +15,7 @@ function checkLogin($pdo, $email, $senha)
     if (!$row) return false; // nenhum resultado (email não encontrado)
 
     return password_verify($senha, $row['hash_senha']);
-  }
-  catch (Exception $e) {
+  } catch (Exception $e) {
     //error_log($e->getMessage(), 3, 'log.php');
     exit('Falha inesperada: ' . $e->getMessage());
   }
@@ -34,8 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   if (checkLogin($pdo, $email, $senha)) {
     header("location: Ex02-home.html");
     exit();
-  }
-  else
+  } else
     $errorMsg = "Dados incorretos";
 }
 
@@ -94,9 +92,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
   </style>
 </head>
+<header>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Biazonne</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarColor01">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="../#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../galeria">Galeria</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../endereco">Novo Endereço</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../agendamento" >Agendamento</a>
+          </li>
+        </ul>
+        <a href="#" class="d-flex">
+          <button class="btn btn-primary" type="submit">Login</button>
+        </a>
+      </div>
+    </div>
+  </nav>
+</header>
 
 <body>
-
   <div class="container">
     <main>
       <h3>Efetue login</h3>

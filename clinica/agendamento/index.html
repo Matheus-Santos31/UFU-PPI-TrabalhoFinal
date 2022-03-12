@@ -187,7 +187,7 @@
             if (!response.ok) throw new Error(response.statusText);
             let horariosOcupados = await response.json();
             console.log("🚀 ~ buscarHorarioPorMedico ~ horariosOcupados", horariosOcupados)
-            let horariosDisponiveis = todosHorarios.filter(value => !horariosOcupados.include(value));
+            let horariosDisponiveis = todosHorarios.filter(value => !horariosOcupados.includes(value));
             console.log("🚀 ~ buscarHorarioPorMedico ~ horariosDisponiveis", horariosDisponiveis)
             horariosDisponiveis.forEach(value => {
                 const option = document.createElement('option');

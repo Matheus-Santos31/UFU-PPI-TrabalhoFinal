@@ -73,15 +73,7 @@
                 </div>
                 <div class="col-sm-9 mb-2 form-floating">
                     <select class="form-select" id="hora" name="hora" aria-label="Floating label select example">
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                        <option value="11">12</option>
-                        <option value="13">13</option>
-                        <option value="14">14</option>
-                        <option value="15">15</option>
-                        <option value="16">16</option>
-                        <option value="17">17</option>
+                        <option selected></option>
                     </select>
                     <label for="hora">Horário</label>
                 </div>
@@ -189,12 +181,17 @@
 
     async function buscarHorarioPorMedico(medicoId, data) {
         try {
+            let selectHora = document.getElementById('hora');
+            const todosHorarios = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
             let response = await fetch("buscaHorariosOcupados.php?medico=" + medicoId + "&data=" + data);
             if (!response.ok) throw new Error(response.statusText);
-            let horarios = await response.json();
-
-            horarios.forEach(value => {
-               console.log(value)
+            let horariosOcupados = await response.json();
+            let horariosDisponiveis = todosHorarios.filter(value => !horariosOcupados.include(value));
+            horariosDisponiveis.forEach(value => {
+                const option = document.createElement('option');
+                option.value = value;
+                option.text = value;
+                selectHora.appendChild(option);
             })
         }
         catch (e) {
@@ -218,10 +215,9 @@
         selectData.addEventListener("change", (event) => {
             let value = selectMedico.options[selectMedico.selectedIndex].value;
             let data = selectData.value;
-            console.log(data, value)
             buscarHorarioPorMedico(value, data);
         });
-}
+    }
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"

@@ -205,6 +205,7 @@
     window.onload = function () {
         let selectEspecialidade = document.getElementById("especialidade");
         let selectMedico = document.getElementById('medico');
+        let selectData = document.getElementById('data');
 
         buscaEspecialidade(selectEspecialidade);
 
@@ -213,9 +214,9 @@
             buscarMedicoPorEspecialidade(value);
         });
 
-        selectMedico.addEventListener("change", (event) => {
+        selectData.addEventListener("change", (event) => {
             let value = selectMedico.options[selectMedico.selectedIndex].value;
-            let data = document.getElementById('data').value;
+            let data = selectData.options[selectData.selectedIndex].value;
             console.log(data, value)
             buscarHorarioPorMedico(value, data);
         });

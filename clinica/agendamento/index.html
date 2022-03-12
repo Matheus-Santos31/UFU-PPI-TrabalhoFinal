@@ -63,6 +63,7 @@
                 </div>
                 <div class="col-sm-6 mb-2 form-floating">
                     <select class="form-select" id="medico" name="medico" aria-label="Floating label select example">
+                        <option selected></option>
                     </select>
                     <label for="medico">Médico</label>
                 </div>
@@ -188,7 +189,7 @@
 
     async function buscarHorarioPorMedico(medicoId, data) {
         try {
-            let response = await fetch("buscaEspecialidade.php?medico=" + medicoId + "&data=" + data);
+            let response = await fetch("buscaHorariosOcupados.php?medico=" + medicoId + "&data=" + data);
             if (!response.ok) throw new Error(response.statusText);
             let horarios = await response.json();
 

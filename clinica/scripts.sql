@@ -34,7 +34,7 @@ CREATE TABLE Agenda (
   id int PRIMARY KEY AUTO INCREMENT,
   data date,
   horario datetime,
-  nome varchar(255),
+  pacienteNome varchar(255),
   sexo varchar(30),
   email varchar(100),
   medico_id int

@@ -8,19 +8,20 @@ $pdo = mysqlConnect();
 exitWhenNotLogged($pdo);
 
 try {
-  $emailUsuario = (string)$_SESSION['emailUsuario'];
+  $emailUsuario = $_SESSION["emailUsuario"];
   $sql1 = <<<SQL
     SELECT pe.id FROM Pessoa pe WHERE pe.email = '$emailUsuario'
   SQL;
   
   $stmt1 = $pdo->prepare($sql1);
   $stmt1->execute();
-
+  $result1 = $stmt1->fetch();
+  $idMedico = $result1["id"];
   $sql2 = <<<SQL
-    SELECT ag.data, ag.horario, ag.nome, ag.sexo, ag.email, 
+    SELECT ag.data, ag.horario, ag.pacienteNome, ag.sexo, ag.email, 
     pe.nome 
     FROM Agenda ag 
-    INNER JOIN Pessoa pe on ag.medico_id = pe.id 
+    INNER JOIN Pessoa pe on ag.medico_id = '$idMedico' 
     WHERE ag.medico_id = '$emailUsuario'
   SQL;
 
@@ -117,8 +118,8 @@ catch (Exception $e) {
         </tr>
 
         <?php
-        if($row){
-            while ($row = $stmt->fetch()) {
+        if($row2){
+            while ($row2 = $stmt2->fetch()) {
     
                 $data = htmlspecialchars($row['data']);
                 $horario = htmlspecialchars($row['horario']);

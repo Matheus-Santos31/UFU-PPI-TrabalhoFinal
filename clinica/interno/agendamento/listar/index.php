@@ -10,7 +10,7 @@ exitWhenNotLogged($pdo);
 try {
 
   $sql = <<<SQL
-    SELECT ag.data, ag.horario, ag.nome, ag.sexo, ag.email, pe.nome FROM Agenda ag INNER JOIN Pessoa pe on ag.medico_id = pe.id
+    SELECT ag.data, ag.horario, ag.pacienteNome, ag.sexo, ag.email, pe.nome FROM Agenda ag INNER JOIN Pessoa pe on ag.medico_id = pe.id
   SQL;
   $stmt = $pdo->query($sql);
 } 
@@ -108,7 +108,7 @@ catch (Exception $e) {
 
             $data = htmlspecialchars($row['data']);
             $horario = htmlspecialchars($row['horario']);
-            $paciente = htmlspecialchars($row['nome']);
+            $paciente = htmlspecialchars($row['pacienteNome']);
             $sexo = htmlspecialchars($row['sexo']);
             $email = htmlspecialchars($row['email']);
             $medico = htmlspecialchars($row['nome']);     

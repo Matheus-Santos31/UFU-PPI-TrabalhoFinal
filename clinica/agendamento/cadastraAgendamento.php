@@ -23,7 +23,7 @@ class RequestResponse
 
 try {
     $sql = <<<SQL
-    INSERT INTO Agenda (data, horario, nome, sexo, email, medico_id)
+    INSERT INTO Agenda (data, horario, pacienteNome, sexo, email, medico_id)
     VALUES (?, ?, ?, ?, ?, ?)
     SQL;
 

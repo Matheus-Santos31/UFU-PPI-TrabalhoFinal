@@ -7,6 +7,24 @@ session_start();
 $pdo = mysqlConnect();
 exitWhenNotLogged($pdo);
 
+try {
+    $emailUsuario = $_SESSION["emailUsuario"];
+    $sqlMed = <<<SQL
+    SELECT pe.nome, pe.sexo, pe.email, pe.telefone, pe.cep, pe.logradouro, 
+      pe.cidade, pe.estado, fu.dataContrato, fu.salario, me.especialidade, me.crm
+    FROM Funcionario fu 
+    INNER JOIN Pessoa pe 
+    on fu.id = pe.id 
+    INNER JOIN Medico me on fu.id = me.id
+    WHERE pe.email = ?
+    SQL;
+    $stmtMed = $pdo->prepare($sqlMed);
+    $stmtMed->execute([$emailUsuario]);
+}
+catch (Exception $e) {
+    exit('Ocorreu uma falha: ' . $e->getMessage());
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -55,7 +73,7 @@ exitWhenNotLogged($pdo);
                     <li class="nav-item">
                         <a class="nav-link" href="../../agendamento/listar/">Listar Agendamentos</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" style="display: none" id="meus_agendamentos">
                         <a class="nav-link" href="../../meu_agendamento/listar/">Listar meus Agendamentos</a>
                     </li>
                 </ul>
@@ -140,5 +158,18 @@ exitWhenNotLogged($pdo);
             </form>
     </section>
 </main>
+<?php
+    $rowMed = $stmtMed->fetch();
+    if($rowMed['especialidade'] != null){
+        echo <<<HTML
+            <script>
+                window.onload = function () {
+                    const navMeusAgendamentos = document.getElementById('meus_agendamentos');
+                    navMeusAgendamentos.style.display = 'block';
+                }
+            </script>
+        HTML;
+    }
+?>
 </body>
 </html>

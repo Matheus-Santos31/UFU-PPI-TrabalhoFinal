@@ -8,11 +8,23 @@ $pdo = mysqlConnect();
 exitWhenNotLogged($pdo);
 
 try {
-
-  $sql = <<<SQL
-    SELECT ag.data, ag.horario, ag.pacienteNome, ag.sexo, ag.email, pe.nome FROM Agenda ag INNER JOIN Pessoa pe on ag.medico_id = pe.id
-  SQL;
-  $stmt = $pdo->query($sql);
+    $emailUsuario = $_SESSION["emailUsuario"];
+    $sqlMed = <<<SQL
+    SELECT pe.nome, pe.sexo, pe.email, pe.telefone, pe.cep, pe.logradouro, 
+      pe.cidade, pe.estado, fu.dataContrato, fu.salario, me.especialidade, me.crm
+    FROM Funcionario fu 
+    INNER JOIN Pessoa pe 
+    on fu.id = pe.id 
+    INNER JOIN Medico me on fu.id = me.id
+    WHERE pe.email = ?
+    SQL;
+    $stmtMed = $pdo->prepare($sqlMed);
+    $stmtMed->execute([$emailUsuario]);
+    
+    $sql = <<<SQL
+        SELECT ag.data, ag.horario, ag.pacienteNome, ag.sexo, ag.email, pe.nome FROM Agenda ag INNER JOIN Pessoa pe on ag.medico_id = pe.id
+    SQL;
+    $stmt = $pdo->query($sql);
 } 
 catch (Exception $e) {
   exit('Ocorreu uma falha: ' . $e->getMessage());
@@ -73,7 +85,7 @@ catch (Exception $e) {
                         <li class="nav-item">
                             <a class="nav-link" href="#">Listar Agendamentos</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item" style="display: none" id="meus_agendamentos">
                             <a class="nav-link" href="../../meu_agendamento/listar">Listar meus Agendamentos</a>
                         </li>
                     </ul>
@@ -133,7 +145,19 @@ catch (Exception $e) {
         </table>
         <a href="../../">Menu de opções</a>
     </section>
-
+    <?php
+        $rowMed = $stmtMed->fetch();
+        if($rowMed['especialidade'] != null){
+            echo <<<HTML
+                <script>
+                    window.onload = function () {
+                        const navMeusAgendamentos = document.getElementById('meus_agendamentos');
+                        navMeusAgendamentos.style.display = 'block';
+                    }
+                </script>
+            HTML;
+        }
+    ?>
 </body>
 
 </html>

@@ -9,24 +9,17 @@ exitWhenNotLogged($pdo);
 
 try {
   $emailUsuario = $_SESSION["emailUsuario"];
-  $sql1 = <<<SQL
-    SELECT pe.id FROM Pessoa pe WHERE pe.email = '$emailUsuario'
-  SQL;
   
-  $stmt1 = $pdo->prepare($sql1);
-  $stmt1->execute();
-  $result1 = $stmt1->fetch();
-  $idMedico = $result1["id"];
-  $sql2 = <<<SQL
+  $sql = <<<SQL
     SELECT ag.data, ag.horario, ag.pacienteNome, ag.sexo, ag.email, 
     pe.nome 
     FROM Agenda ag 
-    INNER JOIN Pessoa pe on ag.medico_id = '$idMedico' 
-    WHERE ag.medico_id = '$emailUsuario'
+    INNER JOIN Pessoa pe on ag.medico_id = pe.id
+    WHERE pe.email = ?
   SQL;
 
-  $stmt2 = $pdo->prepare($sql2);
-  $stmt2->execute();
+  $stmt = $pdo->prepare($sql);
+  $stmt->execute([$emailUsuario]);
 } 
 catch (Exception $e) {
   exit('Ocorreu uma falha: ' . $e->getMessage());
@@ -118,31 +111,29 @@ catch (Exception $e) {
         </tr>
 
         <?php
-        if($row2){
-            while ($row2 = $stmt2->fetch()) {
-    
-                $data = htmlspecialchars($row['data']);
-                $horario = htmlspecialchars($row['horario']);
-                $paciente = htmlspecialchars($row['nome']);
-                $sexo = htmlspecialchars($row['sexo']);
-                $email = htmlspecialchars($row['email']);
-                $medico = htmlspecialchars($row['nome']);     
-    
-                echo <<<HTML
-                <tr>
-                    <td>
-                    <a href="Ex01-exclui-cliente.php?cpf=$cpf">
-                    <img src="images/delete.png"></a>
-                    </td> 
-                    <td>$data</td>
-                    <td>$horario horas</td>
-                    <td>$paciente</td>
-                    <td>$sexo</td>
-                    <td>$email</td>
-                    <td>$medico</td>
-                </tr>
-                HTML;
-            }
+        while ($row = $stmt->fetch()) {
+
+            $data = htmlspecialchars($row['data']);
+            $horario = htmlspecialchars($row['horario']);
+            $paciente = htmlspecialchars($row['pacienteNome']);
+            $sexo = htmlspecialchars($row['sexo']);
+            $email = htmlspecialchars($row['email']);
+            $medico = htmlspecialchars($row['nome']);     
+
+            echo <<<HTML
+            <tr>
+                <td>
+                <a href="Ex01-exclui-cliente.php?cpf=$cpf">
+                <img src="images/delete.png"></a>
+                </td> 
+                <td>$data</td>
+                <td>$horario horas</td>
+                <td>$paciente</td>
+                <td>$sexo</td>
+                <td>$email</td>
+                <td>$medico</td>
+            </tr>
+            HTML;
         }
         ?>
         </table>

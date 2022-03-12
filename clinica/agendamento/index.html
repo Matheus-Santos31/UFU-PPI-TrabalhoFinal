@@ -186,15 +186,40 @@
         }
     }
 
+    async function buscarHorarioPorMedico(medicoId, data) {
+        try {
+            let response = await fetch("buscaEspecialidade.php?medico=" + medicoId + "&data=" + data);
+            if (!response.ok) throw new Error(response.statusText);
+            let horarios = await response.json();
+
+            horarios.forEach(value => {
+               console.log(value)
+            })
+        }
+        catch (e) {
+            console.error(e);
+            return;
+        }
+    }
+
     window.onload = function () {
         let selectEspecialidade = document.getElementById("especialidade");
+        let selectMedico = document.getElementById('medico');
+
         buscaEspecialidade(selectEspecialidade);
 
         selectEspecialidade.addEventListener("change", (event) => {
             let value = selectEspecialidade.options[selectEspecialidade.selectedIndex].value;
             buscarMedicoPorEspecialidade(value);
         });
-    }
+
+        selectMedico.addEventListener("change", (event) => {
+            let value = selectMedico.options[selectMedico.selectedIndex].value;
+            let data = document.getElementById('data').value;
+            console.log(data, value)
+            buscarHorarioPorMedico(value, data);
+        });
+}
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"

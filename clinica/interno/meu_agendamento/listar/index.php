@@ -8,13 +8,24 @@ $pdo = mysqlConnect();
 exitWhenNotLogged($pdo);
 
 try {
-
-  $sql = <<<SQL
-  SELECT pe.nome, pe.sexo, pe.email, pe.telefone, pe.cep, pe.logradouro, 
-    pe.cidade, pe.estado, fu.dataContrato, fu.salario, me.especialidade, me.crm
-  FROM Funcionario fu INNER JOIN Pessoa pe on fu.id = pe.id INNER JOIN Medico me on fu.id = me.id
+  $emailUsuario = (string)$_SESSION['emailUsuario'];
+  $sql1 = <<<SQL
+    SELECT pe.id FROM Pessoa pe WHERE pe.email = '$emailUsuario'
   SQL;
-  $stmt = $pdo->query($sql);
+  
+  $stmt1 = $pdo->prepare($sql1);
+  $stmt1->execute();
+
+  $sql2 = <<<SQL
+    SELECT ag.data, ag.horario, ag.nome, ag.sexo, ag.email, 
+    pe.nome 
+    FROM Agenda ag 
+    INNER JOIN Pessoa pe on ag.medico_id = pe.id 
+    WHERE ag.medico_id = '$emailUsuario'
+  SQL;
+
+  $stmt2 = $pdo->prepare($sql2);
+  $stmt2->execute();
 } 
 catch (Exception $e) {
   exit('Ocorreu uma falha: ' . $e->getMessage());
@@ -26,7 +37,7 @@ catch (Exception $e) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Lista de Funcionários</title>
+  <title>Lista de Agendamentos</title>
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -58,13 +69,13 @@ catch (Exception $e) {
                             <a class="nav-link" href="../../">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="../cadastro/">Novo Funcionário</a>
+                            <a class="nav-link" href="../../funcionario/cadastro/">Novo Funcionário</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="../../paciente/cadastro/">Novo Paciente</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Listar Funcionários</a>
+                            <a class="nav-link" href="../../funcionario/listar/">Listar Funcionários</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="../../paciente/listar/">Listar Pacientes</a>
@@ -76,7 +87,7 @@ catch (Exception $e) {
                             <a class="nav-link" href="../../agendamento/listar/">Listar Agendamentos</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="../../meu_agendamento/listar/">Listar meus Agendamentos</a>
+                            <a class="nav-link" href="#">Listar meus Agendamentos</a>
                         </li>
                     </ul>
                     <a href="../../../logout" class="d-flex">
@@ -93,64 +104,46 @@ catch (Exception $e) {
     <main class="container mt-4 col-sm-12 d-flex justify-content-center">
 
     <section>
-        <h3>Clientes</h3>
+        <h3>Agendamentos</h3>
         <table class="table table-striped table-hover">
         <tr>
             <th></th>
-            <th>Nome</th>
+            <th>Data</th>
+            <th>Horário</th>
+            <th>Paciente</th>
             <th>Sexo</th>
             <th>Email</th>
-            <th>Telefone</th>
-            <th>CEP</th>
-            <th>Logradouro</th>
-            <th>Cidade</th>
-            <th>Estado</th>
-            <th>Data CT</th>
-            <th>Salario</th>
-            <th>Especialidade</th>
-            <th>CRM</th>
+            <th>Médico</th>
         </tr>
 
         <?php
-        while ($row = $stmt->fetch()) {
-
-            $nome = htmlspecialchars($row['nome']);
-            $sexo = htmlspecialchars($row['sexo']);
-            $email = htmlspecialchars($row['email']);
-            $telefone = htmlspecialchars($row['telefone']);
-            $cep = htmlspecialchars($row['cep']);
-            $logradouro = htmlspecialchars($row['logradouro']);
-            $cidade = htmlspecialchars($row['cidade']);
-            $estado = htmlspecialchars($row['estado']);
-            $dataCT = htmlspecialchars($row['dataContrato']);
-            $salario = htmlspecialchars($row['salario']);
-            $especialidade = htmlspecialchars($row['especialidade']);
-            $crm = htmlspecialchars($row['crm']);
-
-            echo <<<HTML
-            <tr>
-                <td>
-                <a href="Ex01-exclui-cliente.php?cpf=$cpf">
-                <img src="images/delete.png"></a>
-                </td> 
-                <td>$nome</td>
-                <td>$sexo</td>
-                <td>$email</td>
-                <td>$telefone</td>
-                <td>$cep</td>
-                <td>$logradouro</td>
-                <td>$cidade</td>
-                <td>$estado</td>
-                <td>$dataCT</td>
-                <td>$salario</td>
-                <td>$especialidade</td>
-                <td>$crm</td>
-            </tr>
-            HTML;
-
+        if($row){
+            while ($row = $stmt->fetch()) {
+    
+                $data = htmlspecialchars($row['data']);
+                $horario = htmlspecialchars($row['horario']);
+                $paciente = htmlspecialchars($row['nome']);
+                $sexo = htmlspecialchars($row['sexo']);
+                $email = htmlspecialchars($row['email']);
+                $medico = htmlspecialchars($row['nome']);     
+    
+                echo <<<HTML
+                <tr>
+                    <td>
+                    <a href="Ex01-exclui-cliente.php?cpf=$cpf">
+                    <img src="images/delete.png"></a>
+                    </td> 
+                    <td>$data</td>
+                    <td>$horario horas</td>
+                    <td>$paciente</td>
+                    <td>$sexo</td>
+                    <td>$email</td>
+                    <td>$medico</td>
+                </tr>
+                HTML;
+            }
         }
         ?>
-
         </table>
         <a href="../../">Menu de opções</a>
     </section>

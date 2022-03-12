@@ -10,7 +10,7 @@ exitWhenNotLogged($pdo);
 try {
 
   $sql = <<<SQL
-    SELECT ad.data, ag.horario, ag.nome, ag.sexo, ag.email, pe.nome FROM Agenda ag INNER JOIN Pessoa pe on ag.medico_id = pe.id
+    SELECT ag.data, ag.horario, ag.nome, ag.sexo, ag.email, pe.nome FROM Agenda ag INNER JOIN Pessoa pe on ag.medico_id = pe.id
   SQL;
   $stmt = $pdo->query($sql);
 } 
@@ -77,7 +77,7 @@ catch (Exception $e) {
                             <a class="nav-link" href="../../meu_agendamento/listar">Listar meus Agendamentos</a>
                         </li>
                     </ul>
-                    <a href="../logout" class="d-flex">
+                    <a href="../../../logout" class="d-flex">
                         <button class="btn btn-primary" type="submit">Logout</button>
                     </a>
                 </div>
@@ -130,7 +130,6 @@ catch (Exception $e) {
 
         }
         ?>
-
         </table>
         <a href="../../">Menu de opções</a>
     </section>

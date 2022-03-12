@@ -79,7 +79,7 @@ catch (Exception $e) {
                             <a class="nav-link" href="../../meu_agendamento/listar">Listar meus Agendamentos</a>
                         </li>
                     </ul>
-                    <a href="../logout" class="d-flex">
+                    <a href="../../../logout" class="d-flex">
                         <button class="btn btn-primary" type="submit">Logout</button>
                     </a>
                 </div>

@@ -216,7 +216,7 @@
 
         selectData.addEventListener("change", (event) => {
             let value = selectMedico.options[selectMedico.selectedIndex].value;
-            let data = selectData.options[selectData.selectedIndex].value;
+            let data = selectData.value;
             console.log(data, value)
             buscarHorarioPorMedico(value, data);
         });

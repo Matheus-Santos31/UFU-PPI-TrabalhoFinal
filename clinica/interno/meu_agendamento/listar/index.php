@@ -8,9 +8,8 @@ $pdo = mysqlConnect();
 exitWhenNotLogged($pdo);
 
 try {
-  $emailUsuario = $_SESSION["emailUsuario"];
-  
-  $sql = <<<SQL
+
+ $sql = <<<SQL
     SELECT ag.data, ag.horario, ag.pacienteNome, ag.sexo, ag.email, 
     pe.nome 
     FROM Agenda ag 
@@ -98,7 +97,7 @@ catch (Exception $e) {
     <main class="container mt-4 col-sm-12 d-flex justify-content-center">
 
     <section>
-        <h3>Agendamentos</h3>
+        <h3>Meus Agendamentos</h3>
         <table class="table table-striped table-hover">
         <tr>
             <th></th>

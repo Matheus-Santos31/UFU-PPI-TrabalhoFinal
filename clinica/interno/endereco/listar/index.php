@@ -10,9 +10,7 @@ exitWhenNotLogged($pdo);
 try {
 
   $sql = <<<SQL
-  SELECT pe.nome, pe.sexo, pe.email, pe.telefone, pe.cep, pe.logradouro, 
-    pe.cidade, pe.estado, pa.peso, pa.altura, pa.tipoSanguineo 
-  FROM Paciente pa INNER JOIN Pessoa pe on pa.id = pe.id
+    SELECT * FROM Enderecos
   SQL;
   $stmt = $pdo->query($sql);
 } 
@@ -26,7 +24,7 @@ catch (Exception $e) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Lista de Paciente</title>
+  <title>Lista de Enderecos</title>
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -61,16 +59,16 @@ catch (Exception $e) {
                             <a class="nav-link" href="../../funcionario/cadastro/">Novo Funcionário</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="../cadastro/">Novo Paciente</a>
+                            <a class="nav-link" href="../../paciente/cadastro/">Novo Paciente</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="../../funcionario/listar/">Listar Funcionários</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Listar Pacientes</a>
+                            <a class="nav-link" href="../../paciente/listar/">Listar Pacientes</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="../../endereco/listar">Listar Endereços</a>
+                            <a class="nav-link" href="#">Listar Endereços</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="../../agendamento/listar">Listar Agendamentos</a>
@@ -93,37 +91,24 @@ catch (Exception $e) {
     <main class="container mt-4 col-sm-12 d-flex justify-content-center">
 
     <section>
-        <h3>Clientes</h3>
+        <h3>Enderecos</h3>
         <table class="table table-striped table-hover">
         <tr>
             <th></th>
-            <th>Nome</th>
-            <th>Sexo</th>
-            <th>Email</th>
-            <th>Telefone</th>
-            <th>CEP</th>
-            <th>Logradouro</th>
-            <th>Cidade</th>
-            <th>Estado</th>
-            <th>Peso</th>
-            <th>Altura</th>
-            <th>Tipo Sanguíneo</th>
+            <th>cep</th>
+            <th>logradouro</th>
+            <th>cidade</th>
+            <th>estado</th>
         </tr>
 
         <?php
         while ($row = $stmt->fetch()) {
 
-            $nome = htmlspecialchars($row['nome']);
-            $sexo = htmlspecialchars($row['sexo']);
-            $email = htmlspecialchars($row['email']);
-            $telefone = htmlspecialchars($row['telefone']);
             $cep = htmlspecialchars($row['cep']);
             $logradouro = htmlspecialchars($row['logradouro']);
             $cidade = htmlspecialchars($row['cidade']);
             $estado = htmlspecialchars($row['estado']);
-            $peso = htmlspecialchars($row['peso']);
-            $altura = htmlspecialchars($row['altura']);
-            $tipoSanguíneo = htmlspecialchars($row['tipoSanguineo']);
+            
 
             echo <<<HTML
             <tr>
@@ -131,17 +116,10 @@ catch (Exception $e) {
                 <a href="Ex01-exclui-cliente.php?cpf=$cpf">
                 <img src="images/delete.png"></a>
                 </td> 
-                <td>$nome</td>
-                <td>$sexo</td>
-                <td>$email</td>
-                <td>$telefone</td>
                 <td>$cep</td>
                 <td>$logradouro</td>
                 <td>$cidade</td>
                 <td>$estado</td>
-                <td>$peso</td>
-                <td>$altura</td>
-                <td>$tipoSanguíneo</td>
             </tr>
             HTML;
 

@@ -186,7 +186,9 @@
             let response = await fetch("buscaHorariosOcupados.php?medico=" + medicoId + "&data=" + data);
             if (!response.ok) throw new Error(response.statusText);
             let horariosOcupados = await response.json();
+            console.log("🚀 ~ buscarHorarioPorMedico ~ horariosOcupados", horariosOcupados)
             let horariosDisponiveis = todosHorarios.filter(value => !horariosOcupados.include(value));
+            console.log("🚀 ~ buscarHorarioPorMedico ~ horariosDisponiveis", horariosDisponiveis)
             horariosDisponiveis.forEach(value => {
                 const option = document.createElement('option');
                 option.value = value;

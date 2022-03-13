@@ -8,7 +8,7 @@ $pdo = mysqlConnect();
 exitWhenNotLogged($pdo);
 
 try {
-
+ $emailUsuario = $_SESSION['emailUsuario'];
  $sql = <<<SQL
     SELECT ag.data, ag.horario, ag.pacienteNome, ag.sexo, ag.email, 
     pe.nome 
@@ -52,7 +52,10 @@ catch (Exception $e) {
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#">Biazonne</a>
+                <a class="navbar-brand d-flex text-align-bottom" href="#" style="margin-right: 0.5rem; position: relative; top: 0.1rem;">
+                    <img src="../../../image/logo2.png" style="width: 2rem; height: 2rem;">
+                </a>
+                <a class="navbar-brand" href="#" style="font-family: serif;">Biazonne</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -138,7 +141,7 @@ catch (Exception $e) {
         </table>
         <a href="../../">Menu de opções</a>
     </section>
-
+    <footer class="d-flex justify-content-center">&copy; Copyright 2022 - Todos os direitos reservados</footer>
 </body>
 
 </html>

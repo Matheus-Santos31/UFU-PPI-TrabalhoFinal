@@ -158,6 +158,7 @@ catch (Exception $e) {
             HTML;
         }
     ?>
+    <footer class="d-flex justify-content-center">&copy; Copyright 2022 - Todos os direitos reservados</footer>
 </body>
 
 </html>

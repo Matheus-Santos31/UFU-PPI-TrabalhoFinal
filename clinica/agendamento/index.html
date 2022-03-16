@@ -191,6 +191,7 @@
             if (!response.ok) throw new Error(response.statusText);
             let horariosOcupados = await response.json();
             let horariosDisponiveis = todosHorarios.filter(value => horariosOcupados != Number(value));
+            removeAllChildNodes(selectHora);
             horariosDisponiveis.forEach(value => {
                 const option = document.createElement('option');
                 option.value = value;

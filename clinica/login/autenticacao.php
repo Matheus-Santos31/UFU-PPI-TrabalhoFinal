@@ -2,6 +2,12 @@
 
 function checkPassword($pdo, $email, $senha)
 {
+
+  if (!$email || !$senha) {
+    http_response_code(401);
+    exit('Faltam campos a ser preenchidos!');
+  }
+
   $sql = <<<SQL
     SELECT a.senhaHash
     FROM Pessoa p
@@ -20,16 +26,19 @@ function checkPassword($pdo, $email, $senha)
     $stmt->execute([$email]);
     $senhaHash = $stmt->fetchColumn();
 
-    if (!$senhaHash) 
-    exit('Email nao encontrado'); // email não encontrado
+    if (!$senhaHash) {
+      http_response_code(401);
+      exit('Email não encontrado'); // email não encontrado
+    }
 
-    if (!password_verify($senha, $senhaHash))
-    exit('senha icorreta');
-      
+    if (!password_verify($senha, $senhaHash)) {
+      http_response_code(401);
+      exit('Senha incorreta');
+    }
+
     // email e senha corretos
     return $senhaHash;
-  } 
-  catch (Exception $e) {
+  } catch (Exception $e) {
     exit('Falha inesperada: ' . $e->getMessage());
   }
 }
@@ -57,7 +66,7 @@ function checkLogged($pdo)
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$email]);
     $senhaHash = $stmt->fetchColumn();
-    if (!$senhaHash) 
+    if (!$senhaHash)
       return false; // nenhum resultado (email não encontrado)
 
     // Gera uma nova string de login com base nos dados
@@ -68,8 +77,7 @@ function checkLogged($pdo)
       return false;
 
     return true;
-  } 
-  catch (Exception $e) {
+  } catch (Exception $e) {
     exit('Falha inesperada: ' . $e->getMessage());
   }
 }

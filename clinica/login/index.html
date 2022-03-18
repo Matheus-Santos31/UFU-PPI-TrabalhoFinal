@@ -10,12 +10,13 @@
     <link rel="stylesheet" href="../global.css">
     <link rel="stylesheet" href="index.css">
     <style>
-        h3{
+        h3 {
             text-align: center;
         }
+
         #loginFailMsg {
             display: none;
-            color: rgb(0, 81, 255);
+            color:red;
             text-align: center;
         }
     </style>
@@ -86,25 +87,30 @@
             let xhr = new XMLHttpRequest();
             xhr.open("POST", "loginApi.php");
             xhr.onload = function () {
+                const loginFailMsg = document.querySelector("#loginFailMsg");
                 if (xhr.status != 200) {
                     console.error("Falha inesperada: " + xhr.responseText);
+                    loginFailMsg.style.display = 'block';
+                    loginFailMsg.innerText = xhr.responseText;
+                    form.senha.value = "";
+                    form.senha.focus();
                     return;
                 }
                 try {
                     var response = JSON.parse(xhr.responseText);
+                    if (response.success)
+                        window.location = response.detail;
+                    else {
+                        loginFailMsg.style.display = 'block';
+                        form.senha.value = "";
+                        form.senha.focus();
+                    }
                 }
                 catch (e) {
                     console.error("String JSON inválida: " + xhr.responseText);
                     return;
                 }
 
-                if (response.success)
-                    window.location = response.detail;
-                else {
-                    document.querySelector("#loginFailMsg").style.display = 'block';
-                    form.senha.value = "";
-                    form.senha.focus();
-                }
             }
 
             xhr.onerror = function () {
@@ -124,10 +130,9 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous">
-    </script>
-    
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+        </script>
+
 </body>
 
 </html>

@@ -54,7 +54,7 @@ body {
 }
 
 .marca {
-  font-family: serif;
+  font-family: Helvetica, sans-serif;
   background-color: #7a1c2e;
   color: #fff;
   margin-right: 0.1rem;
@@ -65,7 +65,7 @@ body {
   text-decoration: none;
   border: solid 1px #7a1c2e;
   border-radius: 5px;
-  font-family: serif;
+  font-family: Helvetica, sans-serif;
   font-size: 1.2rem;
   font-weight: 100;
 }
@@ -77,7 +77,7 @@ body {
 
 .nav-link {
   color: #7a1c2e !important;
-  font-family: serif;
+  font-family: Helvetica, sans-serif;
   font-size: 1.5rem;
   font-weight: 100;
 }

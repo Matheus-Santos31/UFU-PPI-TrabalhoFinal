@@ -35,25 +35,23 @@ catch (Exception $e) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <title>Clínica</title>
-    <style>
-        body {
-            font-family: Helvetica Neue, sans-serif;
-            margin: 0;
-        }
-    </style>
+    <link rel="stylesheet" href="../../index.css">
+    <link rel="stylesheet" href="../../global.css">
 </head>
 <body>
 <header>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand d-flex text-align-bottom" href="#" style="margin-right: 0.5rem; position: relative; top: 0.1rem;">
-                <img src="../../../image/logo2.png" style="width: 2rem; height: 2rem;">
-            </a>
-            <a class="navbar-brand" href="#" style="font-family: serif;">Biazonne</a>
+            <div class="logo">
+                <a class="navbar-brand d-flex text-align-bottom logoIcone" href="#">
+                    <img src="../../../image/logo2.png">
+                </a>
+                <a class="navbar-brand marca" href="#">Biazonne</a>
+            </div>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarColor01">
+            <div class="collapse navbar-collapse">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
                         <a class="nav-link" href="../../">Home</a>
@@ -80,18 +78,19 @@ catch (Exception $e) {
                         <a class="nav-link" href="../../meu_agendamento/listar/">Listar meus Agendamentos</a>
                     </li>
                 </ul>
-                <a href="../../../logout" class="d-flex">
+                <a href="../../../logout" class="d-flex text-decoration-none">
                     <button class="btn btn-primary" type="submit">Logout</button>
                 </a>
             </div>
         </div>
     </nav>
 </header>
+<div class="sub-Nav"></div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
-<main class="container mt-4 col-sm-12 d-flex justify-content-center">
-    <section>
+<main class="container main-content">
+    <section class="container mt-3">
         <h2>Cadastro de Paciente</h2>
             <form action="action.php" method="post" class="row g-2">
                 <div class="col-sm-6 mb-2 form-floating">
@@ -161,7 +160,7 @@ catch (Exception $e) {
             </form>
     </section>
 </main>
-<footer class="d-flex justify-content-center">&copy; Copyright 2022 - Todos os direitos reservados</footer>
+<footer class="d-flex justify-content-center copyRight">&copy; Copyright 2022 - Todos os direitos reservados</footer>
 <?php
     $rowMed = $stmtMed->fetch();
     if($rowMed['especialidade'] != null){
